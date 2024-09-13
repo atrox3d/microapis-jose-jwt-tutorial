@@ -45,25 +45,23 @@ def generate_jwt(payload:dict, private_pem:str):
         private_key_text.encode(),
         password=None
     )
-    
+
     logger.info('generating jwt token')
     return jwt.encode(payload, private_key, 'RS256')
 
+if __name__ == '__main__':
+    payload = {
+        'iss': 'https://auth.coffeemesh.io/',
+        'sub': 'fasdf-fasd-fasdf-fasd-fasf',
+        'aud': 'http://localhost:8000/orders',
+        # 'iat': None,
+        # 'exp': None,
+        'scope': 'openid'
+    }
+    private_pem = 'private_key.pem'
+    public_pem = 'public_key.pem'
 
-payload = {
-    'iss': 'https://auth.coffeemesh.io/',
-    'sub': 'fasdf-fasd-fasdf-fasd-fasf',
-    'aud': 'http://localhost:8000/orders',
-    # 'iat': None,
-    # 'exp': None,
-    'scope': 'openid'
-}
-private_pem = 'private_key.pem'
-public_pem = 'public_key.pem'
-
-create_pems(private_pem, public_pem)
-payload = add_time_to_payload(payload, minutes=1)
-token = generate_jwt(payload, private_pem)
-print(f'{token = }')
-
-
+    create_pems(private_pem, public_pem)
+    payload = add_time_to_payload(payload, minutes=1)
+    token = generate_jwt(payload, private_pem)
+    print(f'{token = }')
